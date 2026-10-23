@@ -14,7 +14,7 @@ class Admin:
         if book_id in self.books:
             print(f"Book ID: {book_id} already exists")
             return
-        new_book = Book(book_id, book_name, book_qty)
+        new_book = Book(book_id, book_name.title(), book_qty)
         self.books[book_id] = new_book
         print(f"{book_name} added successfully ✅")
 
@@ -24,12 +24,20 @@ class Admin:
             print("There are no books")
             return
         for book in self.books.values():
-            lst_of_books.append(book.name)
+            lst_of_books.append((book.name, book.id, book.quantity))
 
-        print(', '.join(lst_of_books))
+        print(lst_of_books)
 
-    def search_book(self, query):
-        pass
+    def search_book(self, query: int | str): # searches using ID and book name
+        # searched_books = []
+        if isinstance(query, int):
+            found_books = [book.name for book in self.books.values() if query == book.id]
+            if not found_books:
+                print(f"No books matched your search. ID: {query}")
+        elif isinstance(query, str):
+            pass
+
+        print(found_books)
 
     def add_user(self, user_id: int, user_fname: str, user_lname: str):
         user_full_name = user_fname + " " + user_lname
@@ -56,7 +64,7 @@ class Admin:
     def print_users(self):
         lst_of_users = []
         if not self.users:
-            print("There is no User")
+            print("There are no Users")
             return
         for user in self.users.values():
             lst_of_users.append(user.name)
@@ -65,11 +73,16 @@ class Admin:
 
 
 jake = Admin()
+
 jake.add_books(1, "Yellow Stone", 20)
-jake.add_books(2, "Yellow Stone", 20)
+jake.add_books(2, "House of GOld", 80)
+jake.add_books(3, "Diary of a CEO", 100)
+jake.add_books(4, "Rich dad, poor dad", 2000)
+jake.add_books(5, "Eat that Frog", 50)
 
 jake.print_books()
 
+#jake.add_user(1, "Prosper", "Barnabas")
+#jake.add_user(2, "Prosper", "Barnabas")
 
-jake.add_user(1, "Prosper", "Barnabas")
-jake.add_user(2, "Prosper", "Barnabas")
+jake.search_book(2)
