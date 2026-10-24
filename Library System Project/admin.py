@@ -6,6 +6,7 @@ class Admin:
     def __init__(self) -> None:
         self.books = {}
         self.users = {}
+        self.borrowed_books = {}
 
     def add_books(self, book_id: int, book_name: str, book_qty: int) -> None:
         existing_books = [book.name for book in self.books.values()]
@@ -32,13 +33,13 @@ class Admin:
             )
 
     def search_book(self, query: int | str):  # searches using ID and book name
-        # searched_books = []
         if isinstance(query, int):
             found_books = [
                 book.name for book in self.books.values() if query == book.id
             ]
             if not found_books:
-                print("No books matched your search.")
+                print("No book matched your search.")
+                return
         elif isinstance(query, str):
             found_books = [
                 book.name
@@ -46,9 +47,10 @@ class Admin:
                 if query.lower() in book.name.lower()
             ]
             if not found_books:
-                print("No books matched your search.")
+                print("No book matched your search.")
+                return
 
-        print("\n".join(found_books))
+        return "\n".join(found_books)
 
     def add_user(self, user_id: int, user_fname: str, user_lname: str):
         user_full_name = user_fname + " " + user_lname
@@ -63,8 +65,55 @@ class Admin:
         self.users[user_id] = new_user
         print(f"{user_full_name} added successfully ✅")
 
-    def borrow_book(self, book_name, user_name):
-        pass
+    def search_user(self, query: int | str):
+        if isinstance(query, int):
+            found_users = [
+                user.full_name for user in self.users.values() if query == user.id
+            ]
+            if not found_users:
+                print("No user matched your search.")
+                return
+        elif isinstance(query, str):
+            found_users = [
+                user.full_name
+                for user in self.users.values()
+                if query.lower() in user.full_name.lower()
+            ]
+            if not found_users:
+                print("No user matched your search.")
+                return
+
+        return "\n".join(found_users)
+
+    def borrow_book(self, book_name: str, user_name: str) -> None:
+        book = None
+        for current_book in self.books.values():
+            if current_book.name.lower() == book_name.lower():
+                book = current_book
+                break
+
+        if book is None or book.quantity <= 0:
+            print(f"Book: {book_name.title()} is not available")
+            return
+
+        user = None
+        for current_user in self.users.values():
+            if current_user.full_name.lower() == user_name.lower():
+                user = current_user
+                break
+
+        if user is None:
+            print(f"User: {user_name.title()} is not found")
+            return
+
+        if user.id not in self.borrowed_books:
+            self.borrowed_books[user.id] = []
+
+        self.borrowed_books[user.id].append(book.id)
+        book.quantity -= 1
+        print(f"{user.full_name.title()} borrowed {book.name.title()}")
+
+
 
     def return_book(self, book_name, user_name):
         pass
@@ -91,10 +140,21 @@ jake.add_books(3, "Diary of a CEO", 100)
 jake.add_books(4, "Rich dad, poor dad", 2000)
 jake.add_books(5, "Eat that Frog", 50)
 
-jake.print_books()
+# jake.print_books()
 
-# jake.add_user(1, "Prosper", "Barnabas")
-# jake.add_user(2, "Prosper", "Barnabas")
+jake.add_user(1, "Tim", "Cook")
+jake.add_user(2, "Joel", "Tim")
+jake.add_user(3, "Jordan", "Miles")
+
+# jake.print_users()
 
 jake.search_book("yellow")
 jake.search_book(3)
+
+jake.search_user(2)
+jake.search_user("tim")
+
+print()
+jake.borrow_book("eat that frog", "tim cook")
+jake.borrow_book("yellow stone", "tim cook")
+jake.borrow_book("eat that frog", "jordan miles")
