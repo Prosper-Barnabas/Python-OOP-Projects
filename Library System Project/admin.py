@@ -20,7 +20,7 @@ class Admin:
         self.books[book_id] = new_book
         print(f"{book_name.title()} added successfully ✅")
 
-    def print_books(self):
+    def print_books(self) -> None:
         lst_of_books = []
         if not self.books:
             print("There are no books")
@@ -34,7 +34,7 @@ class Admin:
             )
         )
 
-    def search_book(self, query: int | str):  # searches using ID and book name
+    def search_book(self, query: int | str) -> str | None:
         if isinstance(query, int):
             found_books = [
                 book.name.title() for book in self.books.values() if query == book.id
@@ -54,7 +54,7 @@ class Admin:
 
         return "\n".join(found_books)
 
-    def add_user(self, user_id: int, user_fname: str, user_lname: str):
+    def add_user(self, user_id: int, user_fname: str, user_lname: str) -> None:
         user_full_name = user_fname + " " + user_lname
         existing_users = [user.full_name.title() for user in self.users.values()]
         if user_id in self.users:
@@ -67,7 +67,7 @@ class Admin:
         self.users[user_id] = new_user
         print(f"{user_full_name.title()} added successfully ✅")
 
-    def search_user(self, query: int | str):
+    def search_user(self, query: int | str) -> str | None:
         if isinstance(query, int):
             found_users = [
                 user.full_name for user in self.users.values() if query == user.id
@@ -117,10 +117,9 @@ class Admin:
 
         self.borrowed_books[user.id].append(book.id)
         book.quantity -= 1
-        print(self.borrowed_books)
         print(f"{user.full_name} borrowed {book.name}")
 
-    def return_book(self, book_name: str, user_name: str):
+    def return_book(self, book_name: str, user_name: str) -> None:
         book = None
         for current_book in self.books.values():
             if current_book.name.lower() == book_name.lower():
@@ -153,23 +152,23 @@ class Admin:
 
         book.quantity += 1
         self.borrowed_books[user.id].remove(book.id)
-        print(self.borrowed_books)
         print(f"{user.full_name.title()} has returned {book.name.title()} successfully")
 
-    def print_borrowed_users(self):
-        borrowed_users= []
+    def print_borrowed_users(self) -> None:
         if not self.borrowed_books:
-            print("There are no borrowed books by any user")
+            print("There are no borrowed books")
             return
 
-        for user in self.users.values():
-            for user_id in self.borrowed_books:
-                if len(self.borrowed_books[user_id]) != 0 and user.id == user_id:
-                    borrowed_users.append(user.full_name.title())
+        for user_id, borrowed_books_id in self.borrowed_books.items():
+            if len(borrowed_books_id) != 0:
+                user_name = self.users[user_id].full_name
+                book_names = []
+                for book_id in borrowed_books_id:
+                    book = self.books[book_id]
+                    book_names.append(book.name.title())
+                print(f"{user_name}: {', '.join(book_names)}")
 
-        print(borrowed_users)
-
-    def print_users(self):
+    def print_users(self) -> None:
         lst_of_users = []
         if not self.users:
             print("There are no Users")
@@ -177,39 +176,3 @@ class Admin:
         for user in self.users.values():
             lst_of_users.append(user.full_name.title())
         print("\n".join(lst_of_users))
-
-
-jake = Admin()
-
-jake.add_books(1, "Yellow Stone", 20)
-jake.add_books(2, "Yellow Gold", 80)
-jake.add_books(3, "Diary of a CEO", 100)
-jake.add_books(4, "Rich dad, poor dad", 2000)
-jake.add_books(5, "Eat that Frog", 50)
-
-jake.print_books()
-
-jake.add_user(1, "Tim", "Cook")
-jake.add_user(2, "Joel", "Tim")
-jake.add_user(3, "Jordan", "Miles")
-jake.add_user(4, "Raphel", "Blakes")
-
-jake.print_users()
-
-jake.search_book("yellow")
-jake.search_book(3)
-
-jake.search_user(2)
-jake.search_user("tim")
-
-jake.borrow_book("eat that frog", "tim cook")
-jake.borrow_book("eat that frog", "jordan miles")
-jake.borrow_book("eat that frog", "tim cook")
-jake.borrow_book("rich dad, poor dad", "raphel blakes")
-jake.borrow_book("rich dad, poor dad", "joel tim")
-
-jake.return_book("eat that frog", "jordan miles")
-jake.return_book("yellow stone", "jordan miles")
-jake.return_book("rich dad, poor dad", "raphel blakes")
-
-jake.print_borrowed_users()
