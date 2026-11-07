@@ -1,3 +1,5 @@
+import json
+
 from book import *
 from user import *
 
@@ -18,7 +20,8 @@ class Admin:
             return
         new_book = Book(book_id, book_name, book_qty)
         self.books[book_id] = new_book
-        print(f"{book_name.title()} added successfully ✅")
+        self.save_state()
+        print(f"\n{book_name.title()} added successfully ✅")
 
     def print_books(self) -> None:
         lst_of_books = []
@@ -35,22 +38,16 @@ class Admin:
         )
 
     def search_book(self, query: int | str) -> str | None:
-        if isinstance(query, int):
-            found_books = [
-                book.name.title() for book in self.books.values() if query == book.id
-            ]
-            if not found_books:
-                print("No book matched your search.")
-                return
-        elif isinstance(query, str):
+        lst_of_books = []
+        if isinstance(query, str):
             found_books = [
                 book.name.title()
                 for book in self.books.values()
                 if query.lower() in book.name.lower()
             ]
-            if not found_books:
-                print("No book matched your search.")
-                return
+        if not found_books:
+            print("No book matched your search.")
+            return
 
         return "\n".join(found_books)
 
@@ -65,7 +62,8 @@ class Admin:
             return
         new_user = User(user_id, user_fname, user_lname)
         self.users[user_id] = new_user
-        print(f"{user_full_name.title()} added successfully ✅")
+        self.save_state()
+        print(f"\n{user_full_name.title()} added successfully ✅")
 
     def search_user(self, query: int | str) -> str | None:
         if isinstance(query, int):
@@ -81,13 +79,13 @@ class Admin:
                 for user in self.users.values()
                 if query.lower() in user.full_name.lower()
             ]
-            if not found_users:
-                print("No user matched your search.")
-                return
+        if not found_users:
+            print("No user matched your search.")
+            return
 
         return "\n".join(found_users)
 
-    def borrow_book(self, book_name: str, user_name: str) -> None:
+    def borrow_book(self, book_name: str, user_name: str):
         book = None
         for current_book in self.books.values():
             if current_book.name.lower() == book_name.lower():
@@ -117,18 +115,17 @@ class Admin:
 
         self.borrowed_books[user.id].append(book.id)
         book.quantity -= 1
+        self.save_state()
         print(f"{user.full_name} borrowed {book.name}")
 
-    def return_book(self, book_name: str, user_name: str) -> None:
+    def return_book(self, book_name: str, user_name: str):
         book = None
         for current_book in self.books.values():
             if current_book.name.lower() == book_name.lower():
                 book = current_book
                 break
 
-        if (
-            book is None
-        ):  # why is it that I cannot perform a book.id operation using and it has to be or
+        if book is None:
             print(f"Book: {book_name.title()} is not available")
             return
 
@@ -152,6 +149,7 @@ class Admin:
 
         book.quantity += 1
         self.borrowed_books[user.id].remove(book.id)
+        self.save_state()
         print(f"{user.full_name.title()} has returned {book.name.title()} successfully")
 
     def print_borrowed_users(self) -> None:
@@ -176,3 +174,14 @@ class Admin:
         for user in self.users.values():
             lst_of_users.append(user.full_name.title())
         print("\n".join(lst_of_users))
+
+    def save_state(self):
+        with open("./library.json", "w", encoding="utf-8") as file:
+            json.dump(self.get_state(), file, indent=4)
+
+    def get_state(self) -> dict:
+        return {
+            "books": [book.to_dict() for book in self.books.values()],
+            "users": [user.to_dict() for user in self.users.values()],
+            "borrowed_books": self.borrowed_books,
+        }
