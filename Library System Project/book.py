@@ -6,3 +6,10 @@ class Book:
 
     def __repr__(self) -> str:
         return f"Book({self.id}, {self.name}, {self.quantity})"
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "quantity": self.quantity,
+        }
