@@ -13,3 +13,11 @@ class Book:
             "name": self.name,
             "quantity": self.quantity,
         }
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            data["id"],
+            data["name"],
+            data["quantity"],
+        )
