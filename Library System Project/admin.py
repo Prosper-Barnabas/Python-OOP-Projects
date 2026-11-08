@@ -14,13 +14,13 @@ class Admin:
 
     def add_books(self, book_id: int, book_name: str, book_qty: int) -> None:
         existing_books = [book.name for book in self.books.values()]
-        if book_name in existing_books:
-            print(f"{book_name.title()} already exists")
+        if book_name.title() in existing_books:
+            print(f"{book_name} already exists")
             return
         if book_id in self.books:
             print(f"Book ID: {book_id} already exists")
             return
-        new_book = Book(book_id, book_name, book_qty)
+        new_book = Book(book_id, book_name.title(), book_qty)
         self.books[book_id] = new_book
         self.save_state()
         print(f"\n{book_name.title()} added successfully ✅")
@@ -31,7 +31,7 @@ class Admin:
             print("There are no books")
             return
         for book in self.books.values():
-            lst_of_books.append((book.name.title(), book.id, book.quantity))
+            lst_of_books.append((book.name, book.id, book.quantity))
         print(
             "\n".join(
                 f"Name: {book[0]}, ID: {book[1]}, Quantity: {book[2]}"
@@ -41,12 +41,14 @@ class Admin:
 
     def search_book(self, query: int | str) -> str | None:
         if isinstance(query, int):
-            found_books = [book.name for book in self.books.values() if query == book.id]
+            found_books = [
+                book.name for book in self.books.values() if query == book.id
+            ]
         elif isinstance(query, str):
             found_books = [
-                book.name.title()
+                book.name
                 for book in self.books.values()
-                if query.lower() in book.name.lower()
+                if query.title() in book.name
             ]
         if not found_books:
             print("No book matched your search.")
@@ -56,17 +58,18 @@ class Admin:
 
     def add_user(self, user_id: int, user_fname: str, user_lname: str) -> None:
         user_full_name = user_fname + " " + user_lname
-        existing_users = [user.full_name.title() for user in self.users.values()]
+        existing_users = [user.full_name for user in self.users.values()]
+        print(existing_users)
         if user_id in self.users:
             print(f"User ID: {user_id} already exists")
             return
-        if user_full_name in existing_users:
+        if user_full_name.title() in existing_users:
             print(f"{user_full_name.title()} already exists")
             return
-        new_user = User(user_id, user_fname, user_lname)
+        new_user = User(user_id, user_fname.title(), user_lname.title())
         self.users[user_id] = new_user
         self.save_state()
-        print(f"\n{user_full_name.title()} added successfully ✅")
+        print(f"\n{user_full_name} added successfully ✅")
 
     def search_user(self, query: int | str) -> str | None:
         if isinstance(query, int):
