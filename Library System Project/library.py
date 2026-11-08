@@ -22,7 +22,7 @@ class Library:
         return self.get_choice(len(options))
 
     def get_choice(self, num_options: int):
-        msg = input(f"\nEnter your choice from 1 to {num_options}: ")
+        msg = input(f"\nEnter your choice from 1 to {num_options}: \n")
         if not msg.isdecimal() or int(msg) > num_options or int(msg) < 1:
             print(f"Invalid input. Pls put in a number between 1 and {num_options}")
             return
@@ -32,10 +32,12 @@ class Library:
         book_id = int(input("Enter the Book ID: "))
         book_name = input("Enter the Book name: ")
         book_quantity = int(input("Enter the Book quantity: "))
-        self.admin.add_books(book_id, book_name, book_quantity)
+        print(self.admin.add_books(book_id, book_name, book_quantity))
 
     def search_book(self):
         query = input("Enter the Book ID or name: ")
+        if query.isdecimal():
+            query = int(query)
         print("\nSearching for book ...")
         print(self.admin.search_book(query))
 
@@ -47,8 +49,10 @@ class Library:
 
     def search_user(self):
         query = input("Enter the User ID or name: ")
+        if query.isdecimal():
+            query = int(query)
         print("Searching for User ...")
-        self.admin.search_user(query)
+        print(self.admin.search_user(query))
 
     def borrow_book(self):
         book_name = input("Enter the Book name: ")
@@ -61,15 +65,15 @@ class Library:
         return f"\n{self.admin.return_book(book_name, user_name)}"
 
     def print_books(self):
-        print("\nList of books in the library")
+        print("\nList of books in the library:\n")
         self.admin.print_books()
 
     def print_users(self):
-        print("\nList of Users in the library")
+        print("\nList of Users in the library:\n")
         self.admin.print_users()
 
     def print_borrowed_books(self):
-        print("\nList of borrowed books")
+        print("\nList of borrowed books\n")
         self.admin.print_borrowed_users()
 
     def run(self):
