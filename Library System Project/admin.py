@@ -10,6 +10,8 @@ class Admin:
         self.users = {}
         self.borrowed_books = {}
 
+        self.load_state()
+
     def add_books(self, book_id: int, book_name: str, book_qty: int) -> None:
         existing_books = [book.name for book in self.books.values()]
         if book_name in existing_books:
@@ -38,8 +40,9 @@ class Admin:
         )
 
     def search_book(self, query: int | str) -> str | None:
-        lst_of_books = []
-        if isinstance(query, str):
+        if isinstance(query, int):
+            found_books = [book.name for book in self.books.values() if query == book.id]
+        elif isinstance(query, str):
             found_books = [
                 book.name.title()
                 for book in self.books.values()
@@ -172,8 +175,32 @@ class Admin:
             print("There are no Users")
             return
         for user in self.users.values():
-            lst_of_users.append(user.full_name.title())
-        print("\n".join(lst_of_users))
+            lst_of_users.append((user.id, user.full_name.title()))
+        print(
+            "\n".join(f"ID: {user[0]}, User Name: {user[1]}" for user in lst_of_users)
+        )
+
+    def load_state(self):
+        try:
+            with open("./library.json", "r", encoding="utf-8") as file:
+                state = json.load(file)
+        except FileNotFoundError:
+            return
+        except json.JSONDecodeError:
+            return
+
+        for book_data in state.get("books", []):
+            book = Book.from_dict(book_data)
+            self.books[book.id] = book
+
+        for user_data in state.get("users", []):
+            user = User.from_dict(user_data)
+            self.users[user.id] = user
+
+        self.borrowed_books = {
+            int(user_id): book_ids
+            for user_id, book_ids in state.get("borrowed_books", {}).items()
+        }
 
     def save_state(self):
         with open("./library.json", "w", encoding="utf-8") as file:
