@@ -34,17 +34,18 @@ class Library:
             "7) Print Books",
             "8) Print Users",
             "9) Print Borrowed Books",
+            "0) Exit the Program ..."
         ]
         print("\n".join(options))
         return self.get_choice(len(options))
 
     # helper function to get the choice of menu from the user
-    def get_choice(self, num_options: int):
-        msg = input(f"\nEnter your choice from 1 to {num_options}: \n")
-        if not msg.isdecimal() or int(msg) > num_options or int(msg) < 1:
+    def get_choice(self, num_options: int) -> int | None:
+        msg = input(f"\nEnter your choice from 0 to {num_options - 1}: ")
+        if not isinstance(msg, int) or msg > num_options or msg < 0:
             print(f"Invalid input. Pls put in a number between 1 and {num_options}")
             return
-        return int(msg)
+        return msg
 
     def add_book(self):
         book_id = self.get_integer("Enter the Book ID: ", minimum=1)
@@ -117,6 +118,8 @@ class Library:
                 self.print_users()
             elif choice == 9:
                 self.print_borrowed_books()
-            else:
+            elif choice == 0:
                 print("Exiting the program ...")
                 is_running = False
+            else:
+                self.run()
