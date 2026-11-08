@@ -37,18 +37,18 @@ class Library:
             "0) Exit the Program ..."
         ]
         print("\n".join(options))
-        return self.get_choice(len(options))
+        return self.get_choice(len(options) - 1)
 
     # helper function to get the choice of menu from the user
     def get_choice(self, num_options: int) -> int | None:
-        msg = input(f"\nEnter your choice from 0 to {num_options - 1}: ")
-        if not isinstance(msg, int) or msg > num_options or msg < 0:
+        msg = input(f"\nEnter your choice from 0 to {num_options}:\n")
+        if not msg.isdecimal() or int(msg) > num_options or int(msg) < 0:
             print(f"Invalid input. Pls put in a number between 1 and {num_options}")
             return
-        return msg
+        return int(msg)
 
     def add_book(self):
-        book_id = self.get_integer("Enter the Book ID: ", minimum=1)
+        book_id = self.get_integer("Enter the Book ID: ", 1)
         book_name = input("Enter the Book name: ")
         book_quantity = self.get_integer("Enter the Book quantity: ", 0)
         self.admin.add_books(book_id, book_name, book_quantity)
@@ -121,5 +121,3 @@ class Library:
             elif choice == 0:
                 print("Exiting the program ...")
                 is_running = False
-            else:
-                self.run()
