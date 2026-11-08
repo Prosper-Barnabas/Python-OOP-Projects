@@ -1,48 +1,41 @@
 {
-    "books": [
-        {
-            "id": 1,
-            "name": "Animal Farm",
-            "quantity": 200
-        },
-        {
-            "id": 2,
-            "name": "Last Lecture",
-            "quantity": 228
-        },
-        {
-            "id": 3,
-            "name": "Eat that Frog",
-            "quantity": 98
-        }
-    ],
-    "users": [
-        {
-            "id": 1,
-            "first_name": "Ada",
-            "last_name": "Lovelace"
-        },
-        {
-            "id": 2,
-            "first_name": "Prosper",
-            "last_name": "Barnabas"
-        },
-        {
-            "id": 3,
-            "first_name": "Charles",
-            "last_name": "Cronk"
-        }
-    ],
-    "borrowed_books": {
-        "2": [
-            3
-        ],
-        "3": [
-            2,
-            3
-        ],
-        "1": [
-            2
-        ]
+  "books": [
+    {
+      "id": 1,
+      "name": "Animal Farm",
+      "quantity": 200
+    },
+    {
+      "id": 2,
+      "name": "Last Lecture",
+      "quantity": 228
+    },
+    {
+      "id": 3,
+      "name": "Eat that Frog",
+      "quantity": 98
     }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "first_name": "Ada",
+      "last_name": "Lovelace"
+    },
+    {
+      "id": 2,
+      "first_name": "Prosper",
+      "last_name": "Barnabas"
+    },
+    {
+      "id": 3,
+      "first_name": "Charles",
+      "last_name": "Cronk"
+    }
+  ],
+  "borrowed_books": {
+    "2": [3],
+    "3": [2, 3],
+    "1": [2]
+  }
 }
