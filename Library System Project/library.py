@@ -5,6 +5,23 @@ class Library:
     def __init__(self) -> None:
         self.admin = Admin()
 
+    # helper function to give the user a retry for errors involving numbers
+    def get_integer(self, prompt: str, minimum: int | None = None) -> int:
+        while True:
+            value = input(prompt)
+
+            try:
+                number = int(value)
+            except ValueError:
+                print("Please enter a valid whole number")
+                continue
+
+            if minimum is not None and number < minimum:
+                print(f"Please enter a number greater than {minimum}")
+                continue
+
+            return number
+
     def print_menu(self):
         print("\n\n------- Welcome to the Library ---------\n")
         options = [
@@ -21,6 +38,7 @@ class Library:
         print("\n".join(options))
         return self.get_choice(len(options))
 
+    # helper function to get the choice of menu from the user
     def get_choice(self, num_options: int):
         msg = input(f"\nEnter your choice from 1 to {num_options}: \n")
         if not msg.isdecimal() or int(msg) > num_options or int(msg) < 1:
@@ -29,10 +47,10 @@ class Library:
         return int(msg)
 
     def add_book(self):
-        book_id = int(input("Enter the Book ID: "))
+        book_id = self.get_integer("Enter the Book ID: ", minimum=1)
         book_name = input("Enter the Book name: ")
-        book_quantity = int(input("Enter the Book quantity: "))
-        print(self.admin.add_books(book_id, book_name, book_quantity))
+        book_quantity = self.get_integer("Enter the Book quantity: ", 0)
+        self.admin.add_books(book_id, book_name, book_quantity)
 
     def search_book(self):
         query = input("Enter the Book ID or name: ")
@@ -42,7 +60,7 @@ class Library:
         print(self.admin.search_book(query))
 
     def add_user(self):
-        user_id = int(input("Enter the User's ID: "))
+        user_id = self.get_integer("Enter the User's ID: ", 1)
         user_fname = input("Enter the User's First name: ")
         user_lname = input("Enter the User's Last name: ")
         self.admin.add_user(user_id, user_fname, user_lname)
