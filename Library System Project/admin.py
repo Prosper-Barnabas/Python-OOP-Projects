@@ -182,7 +182,7 @@ class Admin:
 
     def load_state(self):
         try:
-            with open("./library.json", "r", encoding="utf-8") as file:
+            with open("library.json", "r", encoding="utf-8") as file:
                 state = json.load(file)
         except FileNotFoundError:
             return
@@ -203,7 +203,7 @@ class Admin:
         }
 
     def save_state(self):
-        with open("./library.json", "w", encoding="utf-8") as file:
+        with open("library.json", "w", encoding="utf-8") as file:
             json.dump(self.get_state(), file, indent=4)
 
     def get_state(self) -> dict:
