@@ -46,7 +46,7 @@ class Admin:
             ]
         elif isinstance(query, str):
             found_books = [
-                book.name for book in self.books.values() if query.title() in book.name
+                book.name for book in self.books.values() if query.lower() in book.name.lower()
             ]
         if not found_books:
             print("No book matched your search.")
@@ -73,9 +73,6 @@ class Admin:
             found_users = [
                 user.full_name for user in self.users.values() if query == user.id
             ]
-            if not found_users:
-                print("No user matched your search.")
-                return
         elif isinstance(query, str):
             found_users = [
                 user.full_name.title()
