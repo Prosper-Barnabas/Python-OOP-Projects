@@ -1,6 +1,6 @@
 class Book:
-    def __init__(self, id: int, name: str, author: str, quantity: int) -> None:
-        self.id = id
+    def __init__(self, book_id: int, name: str, author: str, quantity: int) -> None:
+        self.id = book_id
         self.name = name
         self.author = author
         self.quantity = quantity
