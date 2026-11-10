@@ -50,8 +50,9 @@ class Library:
     def add_book(self):
         book_id = self.get_integer("Enter the Book ID: ", 1)
         book_name = input("Enter the Book name: ")
+        book_author = input("Enter the Author's name: ")
         book_quantity = self.get_integer("Enter the Book quantity: ", 0)
-        self.admin.add_books(book_id, book_name, book_quantity)
+        self.admin.add_books(book_id, book_name, book_author, book_quantity)
 
     def search_book(self):
         query = input("Enter the Book ID or name: ")
