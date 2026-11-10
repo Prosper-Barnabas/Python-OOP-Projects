@@ -12,7 +12,9 @@ class Admin:
 
         self.load_state()
 
-    def add_books(self, book_id: int, book_name: str, book_qty: int) -> None:
+    def add_books(
+        self, book_id: int, book_name: str, book_author: str, book_qty: int
+    ) -> None:
         existing_books = [book.name for book in self.books.values()]
         if book_name.title() in existing_books:
             print(f"{book_name.title()} already exists")
@@ -20,7 +22,7 @@ class Admin:
         if book_id in self.books:
             print(f"Book ID: {book_id} already exists")
             return
-        new_book = Book(book_id, book_name.title(), book_qty)
+        new_book = Book(book_id, book_name.title(), book_author.title(), book_qty)
         self.books[book_id] = new_book
         self.save_state()
         print(f"\n{book_name.title()} added successfully ✅")
@@ -46,7 +48,10 @@ class Admin:
             ]
         elif isinstance(query, str):
             found_books = [
-                book.name for book in self.books.values() if query.lower() in book.name.lower()
+                book.name
+                for book in self.books.values()
+                if query.lower() in book.name.lower()
+                or query.lower() in book.author.lower
             ]
         if not found_books:
             print("No book matched your search.")
