@@ -1,4 +1,4 @@
-from admin import *
+from admin import Admin
 
 
 class Library:
