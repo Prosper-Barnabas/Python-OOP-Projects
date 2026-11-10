@@ -1,7 +1,7 @@
 import json
 
-from book import *
-from user import *
+from book import Book
+from user import User
 
 
 class Admin:
