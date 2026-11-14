@@ -21,7 +21,7 @@ class Book:
         return cls(data["id"], data["name"], data["author"], data["quantity"])
 
     @property
-    def quantiy(self) -> int:
+    def quantity(self) -> int:
         return self.__quantity
 
     def borrow(self) -> None:
