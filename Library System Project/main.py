@@ -1,5 +1,5 @@
 from cli import CLI
 
 if __name__ == "__main__":
-    main = CLI()
-    main.run()
+    app = CLI()
+    app.run()
