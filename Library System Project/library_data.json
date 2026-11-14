@@ -1,0 +1,57 @@
+{
+    "books": [
+        {
+            "id": 1,
+            "name": "Things Fall Apart",
+            "author": "Chinua Achebe",
+            "quantity": 18
+        },
+        {
+            "id": 2,
+            "name": "Think Big",
+            "author": "Ben Carson",
+            "quantity": 9
+        },
+        {
+            "id": 3,
+            "name": "The Big Picture",
+            "author": "Ben Carson",
+            "quantity": 14
+        }
+    ],
+    "students": [
+        {
+            "id": 1,
+            "first_name": "Oliver",
+            "last_name": "Brown"
+        },
+        {
+            "id": 2,
+            "first_name": "Ellon",
+            "last_name": "Larry"
+        },
+        {
+            "id": 3,
+            "first_name": "Pinky",
+            "last_name": "Lovelace"
+        },
+        {
+            "id": 5,
+            "first_name": "Charles",
+            "last_name": "Stone"
+        }
+    ],
+    "borrowed_books": {
+        "2": [
+            3,
+            1
+        ],
+        "5": [
+            2
+        ],
+        "3": [],
+        "1": [
+            1
+        ]
+    }
+}
