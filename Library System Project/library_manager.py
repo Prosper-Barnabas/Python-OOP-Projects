@@ -5,7 +5,7 @@ from pathlib import Path
 from book import Book
 from student import Student
 
-DATA_FILE = Path(__file__).parent / "library.json"
+DATA_FILE = Path(__file__).parent / "library_data.json"
 
 class Library_Manager:
     def __init__(self) -> None:
@@ -16,7 +16,7 @@ class Library_Manager:
         self.load_state()
 
     def add_books(
-        self, book_id: int, book_name: str, book_author: str, book_qty: int
+        self, book_id: int, book_name: str, book_author: str, book_quantity: int
     ) -> None:
         existing_books = [book.name for book in self.books.values()]
         if book_name.title() in existing_books:
@@ -27,9 +27,7 @@ class Library_Manager:
             return
         current_id = [book.id for book in self.books.values()]
         print(max(current_id))
-        #if int(book_id) > current_id:
-        #    print(f"Previous ID: {}, Input {}")
-        new_book = Book(book_id, book_name.title(), book_author.title(), book_qty)
+        new_book = Book(book_id, book_name.title(), book_author.title(), book_quantity)
         self.books[book_id] = new_book
         self.save_state()
         print(f"\n{book_name.title()} added successfully")
@@ -127,7 +125,11 @@ class Library_Manager:
             return
 
         self.borrowed_books[student.id].append(book.id)
-        book.quantity -= 1
+        try:
+            book.borrow()
+        except ValueError as error:
+            print(error)
+            return
         self.save_state()
         print(f"{student.full_name} borrowed {book.name}")
 
@@ -160,7 +162,11 @@ class Library_Manager:
             print(f"{student.full_name} did not borrow {book.name}")
             return
 
-        book.quantity += 1
+        try:
+            book.return_book()
+        except ValueError as error:
+            print(error)
+            return
         self.borrowed_books[student.id].remove(book.id)
         self.save_state()
         print(f"{student.full_name} has returned {book.name} successfully")
