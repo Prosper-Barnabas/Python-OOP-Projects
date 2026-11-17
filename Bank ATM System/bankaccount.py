@@ -24,6 +24,10 @@ class BankAccount:
         self.__balance -= amount
         print(f"${amount} withdrawn successfully.")
 
+    def get_balance(self):
+        return f"${self.__balance}"
+
 bank = BankAccount("Prosper", "1")
 bank.deposit(100)
-bank.withdraw(100)
+bank.withdraw(40)
+bank.get_balance()
