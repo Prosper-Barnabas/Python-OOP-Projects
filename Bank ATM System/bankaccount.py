@@ -8,27 +8,27 @@ class BankAccount:
         self.__balance: int = 0
         self.__history = TransactionHistory()
 
-    def deposit(self, amount: int) -> None:
+    def _validate_amount(self, amount):
+        if not isinstance(amount, (int, float)) or isinstance(amount, bool):
+            raise TypeError("Amount must be a number")
         if not amount > 0:
-            print("Amount must be greater than 0")
-            return
+            raise ValueError("Amount must be greater than 0")
 
-        self.__balance += amount
+    def deposit(self, amount: int) -> None:
+        self._validate_amount(amount)
         successful_transaction = Transaction(amount, "deposit")
         self.__history.add_transaction(successful_transaction)
+        self.__balance += amount
         print(f"${amount} deposited successfully.")
 
     def withdraw(self, amount: int) -> None:
-        if amount <= 0:
-            print("Amount must be greater than 0")
-            return
+        self._validate_amount(amount)
         if amount > self.__balance:
-            print("Insufficient Balance")
-            return
+            raise ValueError("Insufficient Balance")
 
-        self.__balance -= amount
         successful_transaction = Transaction(amount, "withdrawal")
         self.__history.add_transaction(successful_transaction)
+        self.__balance -= amount
         print(f"${amount} withdrawn successfully.")
 
     def get_balance(self):
@@ -36,9 +36,3 @@ class BankAccount:
 
     def display_transactions_history(self):
         return self.__history.display_transactions()
-
-bank = BankAccount("Prosper Barnabas", "1")
-bank.deposit(100)
-bank.withdraw(40)
-bank.get_balance()
-bank.display_transactions_history()
