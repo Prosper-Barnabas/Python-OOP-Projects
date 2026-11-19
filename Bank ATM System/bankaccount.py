@@ -52,3 +52,12 @@ class SavingsAccount(BankAccount):
                 f"Transaction declined: This withdrawal would bring your account below the required minimum balance of {self.min_balance}"
             )
         return super().withdraw(amount)
+
+
+class CheckingAccount(BankAccount):
+    def __init__(self, account_name: str, account_number: str) -> None:
+        super().__init__(account_name, account_number)
+        self.fee: int = 10
+
+    def withdraw(self, amount: int) -> None:
+        return super().withdraw(amount)
