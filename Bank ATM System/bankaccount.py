@@ -1,6 +1,7 @@
 from transaction import Transaction
 from history import TransactionHistory
 
+
 class BankAccount:
     def __init__(self, account_name: str, account_number: str) -> None:
         self.account_name = account_name
@@ -42,3 +43,12 @@ class SavingsAccount(BankAccount):
     def __init__(self, account_name: str, account_number: str) -> None:
         super().__init__(account_name, account_number)
         self.min_balance = 100
+
+    def withdraw(self, amount: int) -> None:
+        self._validate_amount(amount)
+        current_balance = self.get_balance()
+        if (current_balance - amount) < self.min_balance:
+            raise ValueError(
+                f"Transaction declined: This withdrawal would bring your account below the required minimum balance of {self.min_balance}"
+            )
+        return super().withdraw(amount)
