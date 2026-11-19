@@ -36,3 +36,9 @@ class BankAccount:
 
     def display_transactions_history(self):
         return self.__history.display_transactions()
+
+
+class SavingsAccount(BankAccount):
+    def __init__(self, account_name: str, account_number: str) -> None:
+        super().__init__(account_name, account_number)
+        self.min_balance = 100
