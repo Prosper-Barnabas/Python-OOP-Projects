@@ -34,10 +34,11 @@ class BankAccount:
     def get_balance(self):
         return self.__balance
 
-    def get_transaction_history(self):
-        return self.__history.get_transactions()
+    def display_transactions_history(self):
+        return self.__history.display_transactions()
 
 bank = BankAccount("Prosper Barnabas", "1")
 bank.deposit(100)
 bank.withdraw(40)
 bank.get_balance()
+bank.display_transactions_history()
