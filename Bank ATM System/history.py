@@ -9,7 +9,13 @@ class TransactionHistory:
             print(f"{transaction} is not a valid Transaction")
             return
         self.__transactions.append(transaction)
-        print(f"{transaction} successfully added")
 
     def get_transactions(self):
         return self.__transactions.copy()
+
+    def display_transactions(self):
+        if len(self.__transactions) == 0:
+            print("No transactions yet.")
+            return
+        for transaction in self.__transactions:
+            print(transaction)
