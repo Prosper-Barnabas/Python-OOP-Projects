@@ -10,7 +10,7 @@ class Transaction:
 
         self.amount = amount
 
-        permitted_transaction_types = ("deposit", "withdrawal")
+        permitted_transaction_types = ("deposit", "withdrawal", "fee")
         if transaction_type not in permitted_transaction_types:
             raise ValueError(f"{transaction_type} is not a transaction type")
 
